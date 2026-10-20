@@ -53,7 +53,7 @@ addresses throughout.
 
 ## The reference implementation
 
-Layonara Landscaper's simulator (`src/sim/`, to be published) is the
+NWN Landscaper's simulator (`src/sim/`, to be published) is the
 reference implementation of the pathfinding rules. It is an offline port of
 `CNWSModule::PlotPathInArea` for NPCs, written from the findings here, and
 it agrees with the server on whether the creature arrived for every route

@@ -23,7 +23,7 @@ So anyone with the game can repeat it.
     listings);
   - client, edge tiles: `~/dev/nwn/nwmain-analysis/decompiled/edge-tiles/`
     (v2 analysis; `notes.md` lists each function with both address forms).
-- The research notes these findings were condensed from are Layonara
+- The research notes these findings were condensed from are NWN
   Landscaper's `research/SPEC_INTERTILE.md`, `SPEC_INTRATILE.md`,
   `SPEC_EDGE.md` and `FINDINGS.md`. `SPEC_INTERTILE.md` gives Ghidra
   addresses except where marked `nm`; the other two give objdump
@@ -45,7 +45,7 @@ Landscaper's `research/*_gdb.py` scripts run `nwserver-linux` under gdb:
 
 ## Recording routes
 
-Layonara Landscaper's `oracle` command generates an area, writes a test
+NWN Landscaper's `oracle` command generates an area, writes a test
 script that walks one creature per route, runs the module on a local
 server and reads the positions back from the log. The setup is in
 [conformance/README.md](../conformance/README.md). Two things matter:

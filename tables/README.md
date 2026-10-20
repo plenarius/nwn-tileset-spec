@@ -40,7 +40,7 @@ build, binary and the addresses it was read at.
 - `P` and `T` are absent: the engine returns no nodes and no exits for
   them.
 
-The file was produced by Layonara Landscaper's
+The file was produced by NWN Landscaper's
 `research/dump_pathnodes_gdb.py`, which calls
 `CNWTileSetManager::ComputePathNodeInformation` (0x3f3ea0) in the running
 server for every letter and orientation; the numbers are the engine's

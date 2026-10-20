@@ -33,7 +33,7 @@ these.
 | [method.md](method.md) | How the code was read and the routes recorded, so others can repeat it |
 
 Some findings cite files that are not in this repository: the shared
-decompiles (cited by path, see method.md), Layonara Landscaper's sources
+decompiles (cited by path, see method.md), NWN Landscaper's sources
 and commits, and the game's own tilesets (by resref). They are named so the
 observation can be repeated; decompiles and game files are never copied
 here.
