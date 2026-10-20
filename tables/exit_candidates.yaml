@@ -1,0 +1,43 @@
+# Crossing candidates of GenerateBestIntraTileExit (SET-INTRA-040..043).
+# CC0 1.0. Build 89.8193.37-17, nwserver-linux,
+# CNWTileSurfaceMesh::GenerateBestIntraTileExit at 0x446800 (asm-verified).
+#
+# n: the number of the layout's exits on the exit's edge (|coordinate along
+#    the edge's normal - exit's| <= 1e-4); k: how many of them have a lower
+#    coordinate along the edge than the exit.
+# Candidates along the edge: exit - outer, exit - inner, exit,
+#    exit + inner, exit + outer (indices 0..4).
+# step: bin width / 2 for "the candidate nearest the start" (+1 weight).
+# half: the goal box half-width along the edge before a candidate is chosen.
+# fin:  the goal box half-width along the edge around the chosen candidate.
+# In every row: step = 0.2 half, inner = 0.4 half, outer = 0.8 half,
+#    fin = 0.09 half. All values f32 (literals at 0xb3a714..0xb3a73c and
+#    the f64 inner offsets at 0xb3a780..0xb3a798).
+
+schema: nwn-tileset-spec/exit-candidates/1
+build: 89.8193.37-17
+binary: nwserver-linux
+
+rows:
+  - {n: 1, k: any, step: 1.0, inner: 2.0, outer: 4.0, half: 5.0, fin: 0.45, note: "also used for n = 0 and n >= 4 (the engine logs)"}
+  - {n: 2, k: any, step: 0.5, inner: 1.0, outer: 2.0, half: 2.5, fin: 0.225}
+  - {n: 3, k: 1,   step: 0.6, inner: 1.2, outer: 2.4, half: 3.0, fin: 0.27}
+  - {n: 3, k: other, step: 0.2, inner: 0.4, outer: 0.8, half: 1.0, fin: 0.09}
+
+# Candidate weights (SET-INTRA-041): w_i = w0 + i * dw (+1 for the start's
+# bin). pref is the tile's placement orientation o when the route has more
+# than two tiles left; on a vertical edge (x = 0 or 10) it is remapped
+# {0: 1, 1: 0, 2: 3, 3: 2}. R1, R2 are the next two route tiles.
+weights:
+  pref_0: {compare: "R1.x vs R2.x", less: [1, 1], equal: [3, 0], greater: [5, -1]}
+  pref_1: {compare: "R1.y vs R2.y", less: [1, 1], equal: [3, 0], greater: [5, -1]}
+  pref_2: {compare: "R1.x vs R2.x", less: [5, -1], equal: [3, 0], greater: [1, 1]}
+  pref_3: {compare: "R1.y vs R2.y", less: [5, -1], equal: [3, 0], greater: [1, 1]}
+  none:   {w0: 3, dw: 0}
+
+# Scores with R = max(0.1, creature radius) (SET-INTRA-042).
+scores:
+  clear_line: "w * 6.0 * R * 7.0"
+  probe_blocked_at_depth_d: "w * d * 0.5   (d >= R; blocked at the first probe d = 0.5 R rejects the candidate)"
+  probe_never_blocked: "w * 6.0 * R"
+  probes: "d = 0.5 R, 1.5 R, 2.5 R, ... while d <= 6.1 R; probe rectangle width 2d; z range widened by 20.01"

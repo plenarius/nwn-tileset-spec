@@ -1,0 +1,74 @@
+# Engine constants used by tiles and area pathfinding.
+# CC0 1.0. Build 89.8193.37-17, nwserver-linux
+# (sha256 d6d952826b671fc62c376dca912e87f1aa45d4aa81c620e912ceb4d8e051111d).
+# Addresses are objdump/nm addresses (Ghidra adds 0x100000). Named symbols
+# were checked with `nm -C`; unnamed literals are named by what uses them.
+# Every value below was read back from the binary at its address
+# (program headers -> file offset), except the immediate 23.
+# Floats are IEEE single precision unless `type: f64`.
+
+schema: nwn-tileset-spec/constants/1
+build: 89.8193.37-17
+binary: nwserver-linux
+
+named:
+  CNWArea::EPSILON:                  {address: 0xb3a948, type: f32, value: 1.0e-4, bits: 0x38d1b717}
+  CNWArea::MIN_TILE_EPSILON:         {address: 0xb3a94c, type: f32, value: 1.0e-4}
+  CNWArea::MAX_TILE_EPSILON:         {address: 0xb3a950, type: f32, value: 9.9999, bits: 0x411fff97, note: "9.99989986f"}
+  CNWArea::TILE_SIZE:                {address: 0xb3a954, type: f32, value: 10.0}
+  CNWArea::MAX_INTER_TILE_SUCCESSORS: {address: 0xb3a958, type: i32, value: 8}
+  CNWArea::SPLINE_COSINE_LIMIT:      {address: 0xb3a944, type: f32, value: 0.9}
+  CNWTile::INTRATILE_ESTIMATE_MULTIPLIER: {address: 0xb3a804, type: f32, value: 1.0}
+  CNWTile::INTRATILE_ESTIMATE_INCREMENT:  {address: 0xb3a808, type: f32, value: 5.0}
+  CNWTile::TIMEUNIT_NODE_ALTERNATIVE_GENERATION: {address: 0xb3a80c, type: i32, value: 300}
+  CNWTile::TIMEUNIT_NODE_EXPANSION:  {address: 0xb3a810, type: i32, value: 12}
+  CNWTile::UNKNOWN_TILE_EXIT:        {address: 0xb3a814, type: i32, value: 12}
+  CNWTile::GOAL_TILE_EXIT:           {address: 0xb3a818, type: i32, value: 12, note: "same value as UNKNOWN_TILE_EXIT"}
+  CNWTile::MAX_TILE_EXITS:           {address: 0xb3a81c, type: i32, value: 13}
+  CNWTile::TRIADJ_NO_EDGE:           {address: 0xb3a820, type: i32, value: -3}
+  CNWTile::TRIADJ_TILE_END:          {address: 0xb3a824, type: i32, value: -2}
+  CNWTile::TRIADJ_UNKNOWN:           {address: 0xb3a828, type: i32, value: -1, note: "never produced by ComputeTriangleAdjacency"}
+  CNWTile::TILE_LENGTH:              {address: 0xb3a82c, type: f32, value: 10.0}
+  CNWTile::TILE_WIDTH:               {address: 0xb3a830, type: f32, value: 10.0}
+  CNWTileSurfaceMeshHashTableEntry::HASH_TABLE_MASK: {address: 0xb3a6b0, type: i32, value: 127}
+  CNWTileSurfaceMeshHashTableEntry::HASH_TABLE_SIZE: {address: 0xb3a6b4, type: i32, value: 128}
+  CNWSArea::MAX_X_TILES:             {address: 0xb4c354, type: i32, value: 32}
+  CNWSArea::MAX_Y_TILES:             {address: 0xb4c350, type: i32, value: 32}
+  CNWSObject::AI_TIME_SLICE:         {address: 0xb42034, type: i32, value: 1000, unit: microseconds}
+  CNWSObject::ACTION_IN_PROGRESS:    {address: 0xb42040, type: i32, value: 1}
+  CNWSObject::ACTION_COMPLETE:       {address: 0xb4203c, type: i32, value: 2}
+  CNWSObject::ACTION_FAILED:         {address: 0xb42038, type: i32, value: 3}
+
+literals:
+  - {address: 0xb16044, type: f32, value: 1.0, use: "route successor score for a direct crossing"}
+  - {address: 0xb16048, type: f32, value: 10.0, use: "tile size in the Rotate* helpers; first in-tile bound offset; initial best crossing score"}
+  - {address: 0xb31908, type: f32, value: 5.0, use: "tile centre; walkmesh position offset"}
+  - {address: 0xb4f7ec, type: f32, value: 225.0, use: "coarse mode: squared distance (15 m) from the request's start to the tile centre"}
+  - {address: 0xb3d2f0, type: f32, value: 400.0, use: "grid path: squared distance (20 m) start to target"}
+  - {address: 0xb3a7a0, type: f64, value: 4.0, use: "in-tile give-up: bound > TILE_SIZE * 4.0"}
+  - {address: 0xb3a6fc, type: f32, value: 3.0, use: "narrow goal box test (3 * EPSILON); centroid divisor"}
+  - {address: 0xb3a700, type: f32, value: 0.5, use: "midpoints; probe start; scores"}
+  - {address: 0xb3a704, type: f32, value: 512.0, use: "walkmesh vertex snapping"}
+  - {address: 0xb3a708, type: f32, value: 0.01, use: "goal range threshold"}
+  - {address: 0xb3a70c, type: f32, value: 0.65, use: "NoNonWalkPolysOnTile width clamp upper limit"}
+  - {address: 0xb3a710, type: f32, value: 1.0e-10, use: "line test: end point reached"}
+  - {address: 0xb3a740, type: f32, value: -1.0, use: "crossing probe: inward direction sign"}
+  - {address: 0xb3a744, type: f32, value: 6.0, use: "crossing scores"}
+  - {address: 0xb3a748, type: f32, value: 7.0, use: "crossing score for a clear straight line"}
+  - {address: 0xb3a74c, type: f32, value: 20.01, use: "crossing probes: z range widening"}
+  - {address: 0xb3a750, type: f32, value: 6.1, use: "crossing probes: depth limit, in radii"}
+  - {address: 0xb39e2c, type: f32, value: 0.1, use: "minimum radius; line test z margins; NoNonWalkPolysOnTile clamped width; corner bisection stop"}
+  - {address: 0xb3d2e4, type: f32, value: 1.0e-4, use: "ComputeBestCorner minimum leg"}
+  - {address: 0xb44f98, type: f64, value: 1.1, use: "smoothing: legs at least this long are subdivided"}
+  - {address: 0xbbda68, type: f32, value: 0.99998999, use: "normalize(): lower tolerance on the squared length"}
+  - {address: 0xbbda6c, type: f32, value: 1.00001001, use: "normalize(): upper tolerance"}
+  - {address: null, type: i32, value: 23, use: "route search: deepening limit m + 23 (immediate 0x17)"}
+
+# PlotPathInArea call caps and per-call budgets (SET-ROUTE-010..012).
+call_budget:
+  npc: {calls: 100, microseconds: 1000, source: "CNWSObject::AI_TIME_SLICE"}
+  player_by_module_setting:   # module +0x45c; read in code, not exercised
+    0: {calls: 100, microseconds: 1000}
+    1: {calls: 10, microseconds: 7000}
+    2: {calls: 5, microseconds: 12000}
+    3: {calls: 1, microseconds: 50000}

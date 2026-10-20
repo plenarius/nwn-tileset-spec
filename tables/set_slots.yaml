@@ -1,0 +1,40 @@
+# .set corner and edge keys, their data slots, and how edge tiles read them.
+# CC0 1.0. Build 89.8193.37-17, nwmain-linux
+# (sha256 6d19c39bc646af5ddbc333ff31797a4acd9019506bcb45ef1b93b1bd5925e700).
+# SET-FILE-020, SET-FILE-021, SET-EDGE-020..040.
+
+schema: nwn-tileset-spec/set-slots/1
+build: 89.8193.37-17
+binary: nwmain-linux
+
+# CNWTileSet::LoadTileSet (0x5e1190): which key fills which slot, and the
+# call that stores it.
+corners:   # clockwise from north-east
+  0: {key: TopRight,    height_key: TopRightHeight,    direction: NE, call: 0x5e190e}
+  1: {key: BottomRight, height_key: BottomRightHeight, direction: SE, call: 0x5e1aa9}
+  2: {key: BottomLeft,  height_key: BottomLeftHeight,  direction: SW, call: 0x5e19a6}
+  3: {key: TopLeft,     height_key: TopLeftHeight,     direction: NW, call: 0x5e1801}
+edges:     # clockwise from north; corner i follows edge i
+  0: {key: Top,    direction: N, call: 0x5e1b74}
+  1: {key: Right,  direction: E, call: 0x5e1dde}
+  2: {key: Bottom, direction: S, call: 0x5e1c42}
+  3: {key: Left,   direction: W, call: 0x5e1d0f}
+
+# CNWTileData::SetCornerType (0x632a40): a non-zero height appends one "+".
+corner_height_marker: "+"
+
+# CNWTileSet::GetCornerType (0x5e0fe0) / GetEdgeType (0x5e1040): world
+# corner or side i of a tile with Tile_Orientation o reads slot (i + o) & 3.
+rotation: "(i + o) & 3"
+
+# CNWCArea::LoadBorder (0x70a5c0): key parts per cell position (C1, E, C2)
+# and the rotation on a direct / swapped match.
+border_keys:
+  west:     {C1: "corner 3 of (0, y)",   E: "edge 3",  C2: "corner 2",              direct: 0, swapped: 2}
+  sw_block: {C1: "",                     E: "",        C2: "corner 2 of (0, 0)",    direct: 0, swapped: 2}
+  nw_block: {C1: "corner 3 of (0, H-1)", E: "",        C2: "",                      direct: 0, swapped: 2}
+  east:     {C1: "corner 0 of (W-1, y)", E: "edge 1",  C2: "corner 1",              direct: 0, swapped: 2}
+  se_block: {C1: "corner 1 of (W-1, 0)", E: "",        C2: "",                      direct: 0, swapped: 2}
+  ne_block: {C1: "",                     E: "",        C2: "corner 0 of (W-1, H-1)", direct: 0, swapped: 2}
+  south:    {C1: "corner 2 of (x, 0)",   E: "edge 2",  C2: "corner 1",              direct: 1, swapped: 3}
+  north:    {C1: "corner 3 of (x, H-1)", E: "edge 0",  C2: "corner 0",              direct: 1, swapped: 3}

@@ -1,0 +1,728 @@
+{
+ "schema": "nwn-tileset-spec/routes-manifest/1",
+ "licence": "CC0-1.0",
+ "build": "89.8193.37-17",
+ "server": "nwserver-linux (sha256 d6d952826b671fc62c376dca912e87f1aa45d4aa81c620e912ceb4d8e051111d)",
+ "creature": {
+  "blueprint": "nw_dog (stock, named only)",
+  "radius": 0.4,
+  "height": 1.0,
+  "effects": [
+   "cutscene ghost (supernatural, permanent)"
+  ],
+  "ai_level": "AI_LEVEL_HIGH",
+  "order": "ActionMoveToLocation(goal, TRUE)",
+  "observed_after_seconds": 40.0
+ },
+ "arrival": "the creature's position after 40 s is within 1.5 m of the goal",
+ "reachable": "start and goal in the same component of the terrain's walkable 0.5 m sample grid (the generator's ground truth, not the engine's)",
+ "corpora": {
+  "v1": {
+   "revision": "cd4b0e1",
+   "walkmesh": "RTIN over 9 x 9 samples a tile, 0.25 m error; each tile on its own",
+   "note": "recorded at revisions 0b689ce to cd4b0e1; the generator did not change between them (only the LS_CLIFF override was added at 8a767fc; earlier files set the cliff height in the source)"
+  },
+  "v2": {
+   "revision": "72205ca",
+   "walkmesh": "RTIN over 9 x 9 samples; shared tile borders, reconciled edge walkability, pieces under 2 m2 pruned, components no layout node owns made non-walkable"
+  },
+  "v3": {
+   "revision": "5b72e9a",
+   "walkmesh": "RTIN over 17 x 17 samples; as v2, plus a morphological opening of walkability, interior holes under 4 m2 filled, strict exits (walkable 0.3 m inside the edge), crossings that can land in the wrong region removed where connectivity allows, unrepresentable edge crossings made non-walkable"
+  }
+ },
+ "totals": {
+  "routes": 1000,
+  "reachable": 998,
+  "arrived": 897
+ },
+ "cases": [
+  {
+   "id": "v1/cliff3.0-seed1",
+   "file": "routes/v1/cliff3.0-seed1.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 3.0,
+   "seed": 1,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "3.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=3.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=3.0 landscaper oracle 40 1",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 39,
+   "reachable_and_arrived": 39,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "0b689ce"
+  },
+  {
+   "id": "v1/cliff3.0-seed2",
+   "file": "routes/v1/cliff3.0-seed2.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 3.0,
+   "seed": 2,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "3.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=3.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=3.0 landscaper oracle 40 2",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 36,
+   "reachable_and_arrived": 36,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "2d48736"
+  },
+  {
+   "id": "v1/cliff3.5-seed1",
+   "file": "routes/v1/cliff3.5-seed1.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 3.5,
+   "seed": 1,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "3.5"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=3.5 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=3.5 landscaper oracle 40 1",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 34,
+   "reachable_and_arrived": 34,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "2d48736"
+  },
+  {
+   "id": "v1/cliff3.5-seed7",
+   "file": "routes/v1/cliff3.5-seed7.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 3.5,
+   "seed": 7,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "3.5"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=3.5 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=3.5 landscaper oracle 40 7",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 30,
+   "reachable_and_arrived": 30,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "cd4b0e1"
+  },
+  {
+   "id": "v1/cliff4.0-seed1",
+   "file": "routes/v1/cliff4.0-seed1.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 4.0,
+   "seed": 1,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "4.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=4.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=4.0 landscaper oracle 40 1",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 30,
+   "reachable_and_arrived": 30,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "8a767fc"
+  },
+  {
+   "id": "v1/cliff4.0-seed2",
+   "file": "routes/v1/cliff4.0-seed2.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 4.0,
+   "seed": 2,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "4.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=4.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=4.0 landscaper oracle 40 2",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 30,
+   "reachable_and_arrived": 30,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "0b689ce"
+  },
+  {
+   "id": "v1/cliff4.0-seed3",
+   "file": "routes/v1/cliff4.0-seed3.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 4.0,
+   "seed": 3,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "4.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=4.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=4.0 landscaper oracle 40 3",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 30,
+   "reachable_and_arrived": 30,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "0b689ce"
+  },
+  {
+   "id": "v1/cliff4.0-seed4",
+   "file": "routes/v1/cliff4.0-seed4.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 4.0,
+   "seed": 4,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "4.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=4.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=4.0 landscaper oracle 40 4",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 28,
+   "reachable_and_arrived": 28,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "2d48736"
+  },
+  {
+   "id": "v1/cliff4.0-seed5",
+   "file": "routes/v1/cliff4.0-seed5.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 4.0,
+   "seed": 5,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "4.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=4.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=4.0 landscaper oracle 40 5",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 32,
+   "reachable_and_arrived": 32,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "2d48736"
+  },
+  {
+   "id": "v1/cliff4.0-seed9",
+   "file": "routes/v1/cliff4.0-seed9.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 4.0,
+   "seed": 9,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "4.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=4.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=4.0 landscaper oracle 40 9",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 31,
+   "reachable_and_arrived": 31,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "cd4b0e1"
+  },
+  {
+   "id": "v1/cliff5.0-seed1",
+   "file": "routes/v1/cliff5.0-seed1.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 5.0,
+   "seed": 1,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "5.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=5.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=5.0 landscaper oracle 40 1",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 37,
+   "reachable_and_arrived": 37,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "2d48736"
+  },
+  {
+   "id": "v1/cliff5.0-seed8",
+   "file": "routes/v1/cliff5.0-seed8.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 5.0,
+   "seed": 8,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "5.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=5.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=5.0 landscaper oracle 40 8",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 35,
+   "reachable_and_arrived": 35,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "cd4b0e1"
+  },
+  {
+   "id": "v1/cliff6.0-seed1",
+   "file": "routes/v1/cliff6.0-seed1.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 6.0,
+   "seed": 1,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "6.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=6.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=6.0 landscaper oracle 40 1",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 37,
+   "reachable_and_arrived": 37,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "0b689ce"
+  },
+  {
+   "id": "v1/cliff6.0-seed2",
+   "file": "routes/v1/cliff6.0-seed2.json",
+   "corpus": "v1",
+   "terrain": "cliff",
+   "cliff_height": 6.0,
+   "seed": 2,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_CLIFF": "6.0"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_CLIFF=6.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=6.0 landscaper oracle 40 2",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 37,
+   "reachable_and_arrived": 37,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "2d48736"
+  },
+  {
+   "id": "v1/flat-seed1",
+   "file": "routes/v1/flat-seed1.json",
+   "corpus": "v1",
+   "terrain": "flat",
+   "seed": 1,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_FLAT": "1"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_FLAT=1 landscaper generate <out-dir>",
+   "record_routes": "LS_FLAT=1 landscaper oracle 40 1",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 40,
+   "reachable_and_arrived": 40,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "2d48736"
+  },
+  {
+   "id": "v1/flat-seed2",
+   "file": "routes/v1/flat-seed2.json",
+   "corpus": "v1",
+   "terrain": "flat",
+   "seed": 2,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "cd4b0e1",
+    "env": {
+     "LS_FLAT": "1"
+    }
+   },
+   "regenerate_area": "git checkout cd4b0e1 && LS_FLAT=1 landscaper generate <out-dir>",
+   "record_routes": "LS_FLAT=1 landscaper oracle 40 2",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 40,
+   "reachable_and_arrived": 40,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (2d48736: 520/520 over the first 13 v1 files; cd4b0e1: 120/120 over the three holdout files)",
+   "recorded_in": "2d48736"
+  },
+  {
+   "id": "v2/cliff3.5-seed12",
+   "file": "routes/v2/cliff3.5-seed12.json",
+   "corpus": "v2",
+   "terrain": "cliff",
+   "cliff_height": 3.5,
+   "seed": 12,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "72205ca",
+    "env": {
+     "LS_CLIFF": "3.5"
+    }
+   },
+   "regenerate_area": "git checkout 72205ca && LS_CLIFF=3.5 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=3.5 landscaper oracle 40 12",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 40,
+   "reachable_and_arrived": 40,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed (72205ca: 120/120 arrived on the fresh-seed cliffs 3.5/4.0/5.0; the server failed exactly the routes the simulator predicted)"
+  },
+  {
+   "id": "v2/cliff4.0-seed1",
+   "file": "routes/v2/cliff4.0-seed1.json",
+   "corpus": "v2",
+   "terrain": "cliff",
+   "cliff_height": 4.0,
+   "seed": 1,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "72205ca",
+    "env": {
+     "LS_CLIFF": "4.0"
+    }
+   },
+   "regenerate_area": "git checkout 72205ca && LS_CLIFF=4.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=4.0 landscaper oracle 40 1",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 39,
+   "reachable_and_arrived": 39,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed (72205ca: 120/120 arrived on the fresh-seed cliffs 3.5/4.0/5.0; the server failed exactly the routes the simulator predicted)"
+  },
+  {
+   "id": "v2/cliff4.0-seed11",
+   "file": "routes/v2/cliff4.0-seed11.json",
+   "corpus": "v2",
+   "terrain": "cliff",
+   "cliff_height": 4.0,
+   "seed": 11,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "72205ca",
+    "env": {
+     "LS_CLIFF": "4.0"
+    }
+   },
+   "regenerate_area": "git checkout 72205ca && LS_CLIFF=4.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=4.0 landscaper oracle 40 11",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 40,
+   "reachable_and_arrived": 40,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed (72205ca: 120/120 arrived on the fresh-seed cliffs 3.5/4.0/5.0; the server failed exactly the routes the simulator predicted)"
+  },
+  {
+   "id": "v2/cliff5.0-seed13",
+   "file": "routes/v2/cliff5.0-seed13.json",
+   "corpus": "v2",
+   "terrain": "cliff",
+   "cliff_height": 5.0,
+   "seed": 13,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "72205ca",
+    "env": {
+     "LS_CLIFF": "5.0"
+    }
+   },
+   "regenerate_area": "git checkout 72205ca && LS_CLIFF=5.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=5.0 landscaper oracle 40 13",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 40,
+   "reachable_and_arrived": 40,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed (72205ca: 120/120 arrived on the fresh-seed cliffs 3.5/4.0/5.0; the server failed exactly the routes the simulator predicted)"
+  },
+  {
+   "id": "v2/cliff6.0-seed3",
+   "file": "routes/v2/cliff6.0-seed3.json",
+   "corpus": "v2",
+   "terrain": "cliff",
+   "cliff_height": 6.0,
+   "seed": 3,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "72205ca",
+    "env": {
+     "LS_CLIFF": "6.0"
+    }
+   },
+   "regenerate_area": "git checkout 72205ca && LS_CLIFF=6.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=6.0 landscaper oracle 40 3",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 39,
+   "reachable_and_arrived": 39,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed (72205ca: 120/120 arrived on the fresh-seed cliffs 3.5/4.0/5.0; the server failed exactly the routes the simulator predicted)"
+  },
+  {
+   "id": "v3/cliff4.0-seed31",
+   "file": "routes/v3/cliff4.0-seed31.json",
+   "corpus": "v3",
+   "terrain": "cliff",
+   "cliff_height": 4.0,
+   "seed": 31,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "5b72e9a",
+    "env": {
+     "LS_CLIFF": "4.0"
+    }
+   },
+   "regenerate_area": "git checkout 5b72e9a && LS_CLIFF=4.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=4.0 landscaper oracle 40 31",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 40,
+   "reachable_and_arrived": 40,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (5b72e9a: 160/160 over the four v3 files, failures included)"
+  },
+  {
+   "id": "v3/cliff6.0-seed32",
+   "file": "routes/v3/cliff6.0-seed32.json",
+   "corpus": "v3",
+   "terrain": "cliff",
+   "cliff_height": 6.0,
+   "seed": 32,
+   "area_tiles": [
+    4,
+    4
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "5b72e9a",
+    "env": {
+     "LS_CLIFF": "6.0"
+    }
+   },
+   "regenerate_area": "git checkout 5b72e9a && LS_CLIFF=6.0 landscaper generate <out-dir>",
+   "record_routes": "LS_CLIFF=6.0 landscaper oracle 40 32",
+   "routes": 40,
+   "reachable": 40,
+   "arrived": 40,
+   "reachable_and_arrived": 40,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (5b72e9a: 160/160 over the four v3 files, failures included)"
+  },
+  {
+   "id": "v3/rugged-seed33",
+   "file": "routes/v3/rugged-seed33.json",
+   "corpus": "v3",
+   "terrain": "rugged",
+   "seed": 33,
+   "area_tiles": [
+    8,
+    8
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "5b72e9a",
+    "env": {
+     "LS_RUGGED": "1"
+    }
+   },
+   "regenerate_area": "git checkout 5b72e9a && LS_RUGGED=1 landscaper generate <out-dir>",
+   "record_routes": "LS_RUGGED=1 landscaper oracle 40 33",
+   "routes": 40,
+   "reachable": 39,
+   "arrived": 36,
+   "reachable_and_arrived": 36,
+   "unreachable_and_arrived": 0,
+   "simulator": "arrival agreed on all 40 routes (5b72e9a: 160/160 over the four v3 files, failures included)"
+  },
+  {
+   "id": "v3/rugged-seed34",
+   "file": "routes/v3/rugged-seed34.json",
+   "corpus": "v3",
+   "terrain": "rugged",
+   "seed": 34,
+   "area_tiles": [
+    8,
+    8
+   ],
+   "generator": {
+    "tool": "Layonara Landscaper",
+    "revision": "5b72e9a",
+    "env": {
+     "LS_RUGGED": "1"
+    }
+   },
+   "regenerate_area": "git checkout 5b72e9a && LS_RUGGED=1 landscaper generate <out-dir>",
+   "record_routes": "LS_RUGGED=1 landscaper oracle 40 34",
+   "routes": 40,
+   "reachable": 39,
+   "arrived": 37,
+   "reachable_and_arrived": 36,
+   "unreachable_and_arrived": 1,
+   "simulator": "arrival agreed on all 40 routes (5b72e9a: 160/160 over the four v3 files, failures included)"
+  }
+ ]
+}
