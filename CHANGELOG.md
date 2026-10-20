@@ -5,7 +5,7 @@ read on and what changed in the engine's behaviour since the last one.
 
 ## Unreleased (build 89.8193.37-17)
 
-First draft, from Layonara Landscaper's research (2026-10-19 to
+First draft, from NWN Landscaper's research (2026-10-19 to
 2026-10-20):
 - spec text for the `.set` file, tiles and walkmeshes, path-node layouts,
   the tile route, the in-tile search and the client's edge tiles, with rule

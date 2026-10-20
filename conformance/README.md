@@ -57,7 +57,7 @@ were moved.
 
 ### The areas
 
-All areas come from Layonara Landscaper's generator (to be published).
+All areas come from NWN Landscaper's generator (to be published).
 Area coordinates are metres from the south-west corner; tiles are 10 m.
 
 - **cliff\<h\>** (4 × 4 tiles, 40 × 40 m). Height:
@@ -162,7 +162,7 @@ path's end depends on time slices (SET-ROUTE-014), and the reference
 simulator itself agreed within 0.5 m on 519 of the first 520 v1 routes,
 the miss being such a case.
 
-The reference implementation, Layonara Landscaper's simulator, agreed on
+The reference implementation, NWN Landscaper's simulator, agreed on
 `arrived` for every route at the time each corpus was recorded
 (`landscaper sim-check routes/<corpus>/<case>.json`); the manifest says
 where each agreement was recorded.
