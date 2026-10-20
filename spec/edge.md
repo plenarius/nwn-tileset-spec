@@ -104,9 +104,10 @@ origin is the cell centre, as for an area tile. *Confirmed: T48.*
 
 ## Models
 
-**SET-EDGE-060** Edge models need no walkmesh: the client draws an edge
-model that has no `.wok`, and a writer MAY ship edge models without one.
-*Confirmed: T50.*
+**SET-EDGE-060** The client's border loader asks for an edge model by name
+only and looks up no walkmesh: a writer MAY ship edge models without a
+`.wok`. *Confirmed (code): T50. That such a model is drawn has not been
+watched in game yet (see T50).*
 
 Name lengths (the 2da name `<tileset>_edge`, model resrefs) are in
 [unknown.md](unknown.md).

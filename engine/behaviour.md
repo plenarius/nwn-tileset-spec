@@ -620,8 +620,9 @@ the option is the "edge tiles" graphics setting, and +0x10c the server's
 per-area "tile border disabled" flag, is inferred.
 
 **T50 Edge models need no walkmesh.** `LoadBorder` reads no walkmesh and
-`Scene::SpawnTile` gets only a model name. Landscaper's exports (from
-commit d720ec1) ship edge models as `.mdl` only, with no `.wok`, and the
-client draws them. *Confirmed (asm: LoadBorder's calls; in game).* The
-server knows nothing of border cells: inferred (`LoadBorder` is client
-code, `CNWCArea`).
+`Scene::SpawnTile` gets only a model name. *Confirmed (asm: LoadBorder's
+calls).* Landscaper's exports (from commit d720ec1) ship edge models as
+`.mdl` only, with no `.wok`, and areas with them load in the client without
+error; that the border is then drawn from them has not been watched yet
+(untested). The server knows nothing of border cells: inferred
+(`LoadBorder` is client code, `CNWCArea`).
