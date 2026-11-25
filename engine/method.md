@@ -26,7 +26,11 @@ So anyone with the game can repeat it.
     and `edge-tiles/draw/` for how tiles and edge tiles are drawn (T51-T55);
   - server, transition triggers:
     `~/dev/nwn/nwserver-analysis/decompiled/walk-in-transition/` (v2
-    analysis, T56-T59, with the server run in its `notes.md`).
+    analysis, T56-T59, with the server run in its `notes.md`);
+  - server, walkmesh offset and surface materials:
+    `~/dev/nwn/nwserver-analysis/decompiled/surface-material/` (v2
+    analysis, T65-T66, the run's scripts in `repro/`); client, footsteps:
+    `~/dev/nwn/nwmain-analysis/decompiled/footstep/` (T67).
 - The research notes these findings were condensed from are NWN
   Landscaper's `research/SPEC_INTERTILE.md`, `SPEC_INTRATILE.md`,
   `SPEC_EDGE.md` and `FINDINGS.md`. `SPEC_INTERTILE.md` gives Ghidra

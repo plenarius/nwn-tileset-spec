@@ -56,6 +56,15 @@ unless marked.
   not write, so a face would inherit the previous face's `Walk` (for face
   0, a stale value). Read in code; untested. *Settle:* a walkmesh with an
   out-of-range material, then inspect the non-walkable face count.
+- **Steps with a height change.** `WalkUpdateLocation` shortens a step
+  whose height change is outside ±0.001 (T66), which reads as moving
+  slower across a slope by its cosine, but walks over slopes up to a grade
+  of 1 kept their speed (the run of T65). Seen once: a creature stepping
+  from where there was no ground onto ground 3.6 m lower crept at
+  0.03 m/s. *Settle:* gdb on the two `WalkUpdateLocationDistance` calls
+  (0x4968ff, 0x496ae8) on a slope and at such a step.
+- **Footstep loading.** Whether the first footstep on a new material, or
+  each step's visual (T67), stalls the client while it loads. Untested.
 - **Dense walkmeshes.** Landscaper's first walkmeshes (before RTIN
   simplification) left searches in progress until the call cap; RTIN-simplified
   ones of ~320 faces finish in one call (T14). The boundary is not known,
