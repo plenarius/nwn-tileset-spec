@@ -1,8 +1,8 @@
 # What the engine does with tilesets and areas
 
 Build 89.8193.37-17. Addresses are objdump addresses (Ghidra adds
-0x100000). T1-T40 are `nwserver-linux` unless marked; T41-T50 are
-`nwmain-linux`. See [README.md](README.md) for the conventions.
+0x100000). T1-T40 and T56-T59 are `nwserver-linux` unless marked;
+T41-T55 are `nwmain-linux`. See [README.md](README.md) for the conventions.
 
 ## The .set file (T1-T5)
 
@@ -599,8 +599,8 @@ rotation, 1, NULL)` (0x474470, `Scene` vtable slot +0x38) builds the yaw
 given. `CNWCTile::LoadModel` (0x80e040) calls the same slot with
 `Tile_Orientation` in the same argument (0x80e0fc-0x80e10f), and 0 where
 the border passes 1. So an edge rotation r turns its model exactly as
-`Tile_Orientation = r` turns an area tile. *Confirmed (asm).* The meaning
-of the 4th argument (stored at TileData +0x54) is not known.
+`Tile_Orientation = r` turns an area tile. *Confirmed (asm).* The 4th argument
+(stored at TileData +0x54) strips the model to its meshes (T53).
 
 **T48 Placement.** Each cell's model goes to
 `(x × 10 + 5, y × 10 + 5, Transition × (Tile_Height + Height))`: 5.0
@@ -626,3 +626,117 @@ calls).* Landscaper's exports (from commit d720ec1) ship edge models as
 error; that the border is then drawn from them has not been watched yet
 (untested). The server knows nothing of border cells: inferred
 (`LoadBorder` is client code, `CNWCArea`).
+
+## Drawing tiles and edge tiles (T51-T55, `nwmain-linux`)
+
+Decompiles in `nwmain-analysis/decompiled/edge-tiles/draw/` (v2 analysis);
+every finding marked asm was checked against `objdump -d`.
+
+**T51 The scene's BSP.** `CNWCArea::LoadArea` (0x70e010) calls
+`Scene::InitBSP` (0x46c330, `Scene` vtable slot +0x30) with the area's
+width and height, 5, 1 and 10.0 (call at 0x70e7da: `esi` = area +0xc,
+`edx` = area +0x10, `ecx` = 5, `r8d` = 1, `xmm0` from 0x12eee2c =
+`0x41200000`). *Confirmed (asm).* `InitBSP` builds the root box from
+(-5 × 10, -5 × 10) to ((W + 5) × 10, (H + 5) × 10) metres and sets the
+global `cellsize` to 10. *Read in the v2 decompile only.* So the BSP
+covers the area and its 5-cell border ring (T43). Each cell has one
+`TileData`, found by position (`SceneBSPGetTileData`, 0x47b480);
+`Scene::SpawnTile` creates it when missing and links it with the cells
+one cell away in x and in y. *Decompile only.*
+
+**T52 Meshes are culled by their own box.** `SceneBSPAddPart` (0x47ca10)
+files a `PartTriMesh` with `BSPFitBox(root, part +0x64, part +0x70)`
+(0x5b2620): the node that holds the mesh's whole box. *Decompile only.*
+Each frame `ManageSceneBSP` (0x47fa80) walks the BSP against the camera's
+planes (`BSPTraverseVolumeApprox`, 0x5b2cf0), and `ProcessTriMeshParts`
+(0x480d40) drops a mesh only when `PartOutside(PartTriMesh*, List<Plane>&)`
+(0x47a130) finds its box (+0x64 min, +0x70 max) wholly above one plane
+(`BoxAbovePlane`, call at 0x47a189; calls from 0x480da3, 0x480e53,
+0x480f56). `ProcessStaticParts` (0x470970) computes the box with
+`ComputePartBBox` (0x461370, call at 0x470a1f) when the tile is spawned.
+*Confirmed (asm).* So a tile mesh that reaches outside the tile's 10 m
+cell is kept while its box meets the view, whatever its cell does. That it
+is then drawn as authored has not been watched in game. A box that leaves
+the BSP root falls into a border node whose region test is approximate;
+whether such a mesh is culled early is inferred (spec/unknown.md).
+
+**T53 The 4th argument of `Scene::SpawnTile` keeps only meshes.**
+`SpawnTile` keeps the argument in `r13d` (0x474485) and passes it to
+`ProcessStaticParts` as its 5th (0x474573, call at 0x47457f).
+`ProcessStaticParts` keeps it at -0x54(%rbp) (0x470996). For a part that
+is not a `PartTriMesh`, when the argument is non-zero, it removes the part
+from the list and deletes it (test at 0x470abc-0x470ac1, removal and
+virtual delete at 0x470ae0-0x470af1). With 0, an emitter (0x470ac3), a part
+`ProcessTilePart` (0x461720) took (0x470ac8) and a light (0x470ad4) stay.
+`LoadBorder` passes 1 and `CNWCTile::LoadModel` 0 (T47). *Confirmed
+(asm).* So an edge model draws its meshes only: its lights, emitters and
+other non-mesh nodes are thrown away.
+
+**T54 Tile lights.** `Scene::SetTileLights` (0x45edf0, vtable slot +0x40)
+recolours the first two lights of the `TileData` at a position. It is
+reached from `CNWCTile::SetMainLightColor` (call at 0x80d369), for area
+tiles. `LoadBorder` makes six indirect calls: four to slot +0x38,
+`SpawnTile` (0x70abe3, 0x70b06d, 0x70b4fc, 0x70b9ad), and two to the 2da
+object's slot +0x8 after `C2DA::Unload2DArray` (0x70ba23, 0x70bac6). It
+never calls `SetTileLights`. *Confirmed (asm).* Edge models keep no
+lights anyway (T53).
+
+**T55 The per-area border flag.** `CNWCArea::LoadArea` reads area +0x10c
+(the flag of T49) with `CNWMessage::ReadBOOL` (0x710353-0x710358), inside a
+branch taken only when `CNWCMessage::ServerSatisfiesBuild(0x2001, 0x24, 5)`
+holds: servers from 8193.36.5. *Confirmed (asm for the read; the build test
+from the v2 decompile).* `nwserver-linux` contains the area field name
+`TileBrdrDisabled` and `CNWSVirtualMachineCommands::ExecuteCommandSetAreaTileBorderDisabled`
+(0x6f79d0); that the BOOL is this field is inferred.
+
+## Area transition triggers (T56-T59, `nwserver-linux`)
+
+Decompiles in `nwserver-analysis/decompiled/walk-in-transition/` (v2
+analysis) and `pathfinding/movement/WalkUpdateLocation.c`.
+
+The server run cited below: a module of two 8 × 32 areas of a stock
+tileset side by side, with 16 transition triggers (`Type` 1, 20 m × 1.5 m)
+along the shared side of each, each `LinkedTo` a waypoint 4 m into the
+other area (`LinkedToFlags` 2) facing away from the side; `nwserver-linux`
+without NWNX; creatures (`nw_badger`) created 10 m from the side and told
+`ActionMoveToLocation` to a point 0.2 m short of it, their area, position
+and facing logged 8 s later.
+
+**T56 Walking into a trigger runs only its OnEnter.** Entering a trigger
+signals event 0xc to it. `CNWSTrigger::EventHandler` (0x5e3380) branches on
+the event (0xc at 0x5e3b04, 0xd, 0xb, 0x18, 0x1e at 0x5e3b2c). For 0xc it
+stores the entering object at trigger +0x3b0 (0x5e3f86) and runs
+`OnEnterTrap` (0x5e3f9b) when the trigger is a trap (+0x3d4), else script
+slot 1, OnEnter (0x5e4218-0x5e4222). Nothing else. *Confirmed (asm; server
+run: a creature walking into a transition trigger with no OnEnter stood in
+it and stayed in its area).*
+
+**T57 A transition fires on event 0x1e, from a walk to the trigger.**
+`CNWSCreature::WalkUpdateLocation` (0x496790) signals event 0x1e to the
+creature's movement target when that target is a trigger, not a trap
+(+0x3d4), and the creature is within its use range
+(`CNWSCreature::GetIsInUseRange(target, 0.0, 0)`) (0x496b50-0x496bda).
+`EventHandler` case 0x1e stores the creature at +0x3b0 (0x5e3b40), sets the
+loading screen from +0x42c when the creature is a player, and runs script
+slot 6, OnClick (0x5e3c3a-0x5e3c46); with no OnClick script, and a link,
+the script it runs is `NW_G0_Transition`. *Confirmed (asm); the default
+script name read in the v2 decompile.* A player's click on a trigger makes
+it the movement target; that path was not run on the server
+(`ActionMoveToObject` on a trigger walks to its first vertex and fires
+nothing).
+
+**T58 On a trigger, the entering and the clicking object are one field.**
+`CNWSVirtualMachineCommands::ExecuteCommandGetEnteringObject` (0x6a3130)
+returns trigger +0x3b0 for an object of type 7 (trigger), the field both
+events write (T56, T57); there is no separate implementation of
+`GetClickingObject` in the binary. *Decompile; confirmed by the server
+run:* a creature walking into a trigger whose OnEnter is
+`nw_g0_transition` arrived at the linked waypoint in the other area.
+
+**T59 Jumping to a waypoint takes its facing.**
+`CNWSCreature::AIActionJumpToObject` (0x4b28b0), for a waypoint target,
+takes the waypoint's position and orientation and calls
+`CNWSObject::SetOrientation` with that orientation before moving the
+creature, into another area with `AddToArea` when needed. *Decompile;
+confirmed by the server run:* the creature of T58 arrived facing 0 (east)
+at a waypoint whose orientation was (1, 0).

@@ -109,5 +109,13 @@ only and looks up no walkmesh: a writer MAY ship edge models without a
 `.wok`. *Confirmed (code): T50. That such a model is drawn has not been
 watched in game yet (see T50).*
 
+**SET-EDGE-061** The client keeps only an edge model's meshes: it deletes
+every other node (lights, emitters and the rest) when it places the model.
+A writer SHOULD NOT put lights or emitters in edge models; they never
+show. *Confirmed: T53.*
+
+**SET-EDGE-062** Edge models get none of the area's tile light colours:
+those reach area tiles only. *Confirmed: T54.*
+
 Name lengths (the 2da name `<tileset>_edge`, model resrefs) are in
 [unknown.md](unknown.md).

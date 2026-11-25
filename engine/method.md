@@ -22,7 +22,11 @@ So anyone with the game can repeat it.
     and `spec-intratile/` made for the research notes, `asm/` objdump
     listings);
   - client, edge tiles: `~/dev/nwn/nwmain-analysis/decompiled/edge-tiles/`
-    (v2 analysis; `notes.md` lists each function with both address forms).
+    (v2 analysis; `notes.md` lists each function with both address forms),
+    and `edge-tiles/draw/` for how tiles and edge tiles are drawn (T51-T55);
+  - server, transition triggers:
+    `~/dev/nwn/nwserver-analysis/decompiled/walk-in-transition/` (v2
+    analysis, T56-T59, with the server run in its `notes.md`).
 - The research notes these findings were condensed from are NWN
   Landscaper's `research/SPEC_INTERTILE.md`, `SPEC_INTRATILE.md`,
   `SPEC_EDGE.md` and `FINDINGS.md`. `SPEC_INTERTILE.md` gives Ghidra
