@@ -81,6 +81,12 @@ n.z*v0.z)`. *Confirmed: T6.*
 writer SHOULD write tile walkmeshes as ASCII. *Confirmed: T6 (every corpus
 tile is ASCII); the binary branch was not read (unknown.md).*
 
+**SET-TILE-017** A tile walkmesh with no `position` line gets the offset
+(0, 0, 0), not (5, 5, 0). A writer MUST write the `position` line, as
+`position 0 0 0` for a walkmesh centred on the tile, and a tool that
+rewrites a tile walkmesh MUST NOT drop it when it is zero. *Confirmed:
+T65.*
+
 ## Walkable and non-walkable faces
 
 **SET-TILE-020** A face is walkable when `surfacemat.2da`'s `Walk` for its
@@ -93,6 +99,12 @@ T7.*
 point lookup and the in-tile search. Non-walkable faces are only used to
 block line tests (SET-INTRA-062). A creature can stand only on walkable
 faces. *Confirmed: T7, T38.*
+
+**SET-TILE-022** A walkable face's material changes nothing about how a
+creature walks or is routed over it. The server reads it only for the
+script command `GetSurfaceMaterial`, door action points and line-of-sight
+tests; the client for footstep sounds and visuals. A writer MAY give
+neighbouring walkable faces different materials. *Confirmed: T66, T67.*
 
 ## Adjacency
 

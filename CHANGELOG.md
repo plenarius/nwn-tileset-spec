@@ -5,6 +5,17 @@ was read on and what changed in the engine's behaviour since the last one.
 
 ## Unreleased (build 89.8193.37-17)
 
+- Engine findings T65-T66 (`nwserver-linux`): a tile walkmesh's +5 m
+  centring is applied only by a `position` line, so a walkmesh without
+  one lands 5 m south-west and creatures lose most of the ground and most
+  routes (shown in a server run); walkable materials are read only by
+  `GetSurfaceMaterial`, door action points and line-of-sight tests, never
+  by movement or routing. T67 (`nwmain-linux`): the client uses a face's
+  material for footsteps only.
+- Rules SET-TILE-017 (write the `position` line; never drop a zero one)
+  and SET-TILE-022 (walkable materials don't change movement).
+- unknown.md: the height rule in `WalkUpdateLocation`, and footstep
+  loading.
 - Engine findings T51-T55 (`nwmain-linux`): the scene's BSP covers the
   area and its 5-cell border ring; tile meshes are culled by their own
   bounding box, not by their cell; the 4th argument of `Scene::SpawnTile`

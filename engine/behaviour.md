@@ -1,8 +1,8 @@
 # What the engine does with tilesets and areas
 
 Build 89.8193.37-17. Addresses are objdump addresses (Ghidra adds
-0x100000). T1-T40 and T56-T59 are `nwserver-linux` unless marked;
-T41-T55 and T60-T64 are `nwmain-linux`. See [README.md](README.md) for the
+0x100000). T1-T40, T56-T59 and T65-T66 are `nwserver-linux` unless marked;
+T41-T55, T60-T64 and T67 are `nwmain-linux`. See [README.md](README.md) for the
 conventions.
 
 ## The .set file (T1-T5)
@@ -60,7 +60,8 @@ is. *Confirmed (asm).*
 **T6 Loading a tile walkmesh.** `CNWTileSurfaceMesh::LoadWalkMesh`
 (0x441820), ASCII branch:
 - `position px py pz` gives an offset (px + 5.0, py + 5.0, pz), so a
-  walkmesh authored centred on the tile (-5..5) lands in 0..10;
+  walkmesh authored centred on the tile (-5..5) lands in 0..10. With no
+  `position` line the offset stays (0, 0, 0) (T60);
 - `orientation ax ay az angle` gives a quaternion (axis normalised,
   `sincos(0.5 * angle)`; a zero axis is the identity), applied to each
   vertex before the offset;
@@ -799,3 +800,69 @@ skybox, the background behind every picture of T60-T63 was (104, 126, 145)
 against the sun fog colour (104, 127, 145). *Confirmed (in game, one
 renderer).* With a skybox, not checked.
 
+
+## Walkmesh offset and surface materials (T65-T67)
+
+Decompiles and notes in `nwserver-analysis/decompiled/surface-material/`
+(with the run's scripts in `repro/`) and
+`nwmain-analysis/decompiled/footstep/` (v2 analyses).
+
+The server run cited below: a NWN Landscaper area of 10 × 10 tiles
+(rolling ground, a river, a road, several walkable materials;
+nwn-landscaper fff4987), on `nwserver-linux` without NWNX and with no
+player; creatures (`nw_commale`, event scripts cleared) told
+`ActionMoveToLocation` to random points 4-12 m away, one after another,
+their position logged every 20 ms; and `GetGroundHeight` and
+`GetSurfaceMaterial` sampled on a 0.5 m grid over four tiles. Each was
+run with the area's walkmeshes as exported (`position 0 0 0`) and with the
+same walkmeshes rewritten without the `position` line.
+
+**T65 A walkmesh with no `position` line is not centred.**
+`CNWTileSurfaceMesh::LoadWalkMesh` (0x441820) sets the offset to
+(0, 0, 0) (0x441965-0x441979). Only a `position` line (compared at
+0x441a67, read at 0x441ffc) replaces it, with (px + 5.0, py + 5.0, pz)
+(the 5.0 at 0xb31908, added at 0x442009-0x442035). So a walkmesh authored
+at -5..5 with no `position` line keeps those coordinates: only the
+tile's south-west quarter (0..5, 0..5) has ground, the walkmesh's
+north-east quarter. *Confirmed (asm; server run):* with the line removed,
+393 of 1,681 grid points had ground, all in that quarter, and their
+heights matched the uncentred walkmesh (393 of 393); with
+`position 0 0 0`, all 1,447 points over walkable faces matched the centred
+one. With the line removed, 6-9% of the random walks ended at their goal,
+against 83-91% with it, in each of six copies of the area; walks that
+crossed a tile edge almost never did (1%). Creatures walked across the
+three quarters with no ground at the tile's base height, and one, stepping
+from there onto ground 3.6 m lower, crept at 0.03 m/s for 0.3 s before it
+crossed (T66 has the step rule that likely causes this).
+
+**T66 Walkable materials do not change movement.** On the server the
+`surfacemat.2da` table is read in three places: `Walk` in `LoadWalkMesh`
+(T7) and in `CNWSArea::PositionWalkable` (0x635440), and `LineOfSight` in
+`CNWTileSurfaceMesh::GetLOSMaterials` (0x43f9c0). The walkable faces'
+materials (mesh +0x90) are read by `CNWTileSurfaceMesh::GetSurfaceMaterial`
+(0x4444f0) and by the line-of-sight tests `CheckAABBNode` (0x43ff10) and
+`CheckAABBNodeOneWay` (0x440250). `CNWSArea::GetSurfaceMaterial`
+(0x635380) is called only by `PositionWalkable` (whose only caller is
+`CNWSDoor::GetNearestActionPoint`) and by the script command
+`GetSurfaceMaterial`. None of these is on the move or route path, so two
+walkable faces with different materials are walked and routed like faces
+of one material. *Confirmed (code; server run: 54 steps across a material
+change moved at 0.98 of the creatures' median speed).*
+
+`CNWSCreature::WalkUpdateLocation` (0x496790) does treat height: when a
+step's height change is outside ±0.001 (0x496914-0x49692c, constants at
+0xb3d2d8 and 0xb3d2dc), it takes the step again with its distance d
+multiplied by the x of `normalize(d, 0, dz)` (0x496a90-0x496ae8). *Read in
+asm; untested.* The runs showed no slowdown on slopes up to a grade of 1,
+so how this plays out is open (unknown.md).
+
+**T67 The client uses a face's material for footsteps only.**
+(`nwmain-linux`.) `CNWCArea::GetSurfaceMaterial` (0x703390) is called by
+`CNWCCreature::PlayFootstep` (0x72ff90), `CNWCItem::UpdatePosition`
+(0x7cfec0) and `CNWCTile::CreateMenuByID` (0x80c160). `PlayFootstep` takes
+`surfacemat.2da`'s `Name` for the material under the creature, adds
+`rand() % 3` when it is not empty, and plays the WAV in that column of
+`footstepsounds.2da` for the creature's footstep type
+(`CExoSound::Play3DOneShotSound` at 0x730404); `Visual` and `IsWater` go to
+`CNWCCreature::DoFootstepVisual` (0x72f8d0), which loads a visual effect
+model for the step. Nothing there moves the creature. *Confirmed (code).*
