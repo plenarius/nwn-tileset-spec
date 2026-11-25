@@ -19,6 +19,14 @@ was read on and what changed in the engine's behaviour since the last one.
 - Rules SET-EDGE-061, SET-EDGE-062 (edge models keep only meshes and get
   no tile light colours) and SET-TILE-070 (tile meshes may reach outside
   their cell, within 50 m of the area).
+- Engine findings T60-T64 (`nwmain-linux`, in game): tile meshes outside
+  their cell are drawn, lit and fogged like their tile; an edge row whose
+  model is `****` draws nothing; edge models are drawn darker than the same
+  meshes as area tiles; how far the client draws follows `FogClipDist`;
+  past the drawn geometry the client shows the fog colour. Seen in a client
+  run of generated areas.
+- Rule SET-TILE-071 (past the drawn geometry, the fog colour); SET-TILE-070,
+  SET-EDGE-032, SET-EDGE-060 and SET-EDGE-062 now also confirmed in game.
 - unknown.md: the meaning of `SpawnTile`'s 4th argument is settled (T53);
   new open items for meshes outside their cell in game, past the BSP ring,
   the fog clip distance, and transition triggers.

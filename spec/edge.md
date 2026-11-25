@@ -67,8 +67,9 @@ matches only an empty key part. *Confirmed: T45.*
 
 **SET-EDGE-032** When no row matches, the cell gets no model. A writer
 MUST provide a row for every boundary edge key and every corner block key
-it wants filled; missing rows leave holes. *Confirmed: T46 (the model
-string is empty; that an empty model draws nothing is inferred).*
+it wants filled; missing rows leave holes. A row whose `Model` is `****`
+draws nothing too, so a writer MAY empty a row to leave its cells empty.
+*Confirmed: T46; in game: T61.*
 
 ## Rotation and placement
 
@@ -106,8 +107,7 @@ origin is the cell centre, as for an area tile. *Confirmed: T48.*
 
 **SET-EDGE-060** The client's border loader asks for an edge model by name
 only and looks up no walkmesh: a writer MAY ship edge models without a
-`.wok`. *Confirmed (code): T50. That such a model is drawn has not been
-watched in game yet (see T50).*
+`.wok`. *Confirmed (code): T50; in game: T62.*
 
 **SET-EDGE-061** The client keeps only an edge model's meshes: it deletes
 every other node (lights, emitters and the rest) when it places the model.
@@ -115,7 +115,8 @@ A writer SHOULD NOT put lights or emitters in edge models; they never
 show. *Confirmed: T53.*
 
 **SET-EDGE-062** Edge models get none of the area's tile light colours:
-those reach area tiles only. *Confirmed: T54.*
+those reach area tiles only. *Confirmed: T54; in game, edge models are
+drawn darker than the same meshes as area tiles: T62.*
 
 Name lengths (the 2da name `<tileset>_edge`, model resrefs) are in
 [unknown.md](unknown.md).
