@@ -166,5 +166,10 @@ own bounding box, not by the tile's cell. A tile model MAY carry meshes
 that reach outside its 10 × 10 m cell; they are kept while their box meets
 the view. The client's scene covers the area and 5 cells around it
 (T51), so such a mesh SHOULD stay within 50 m of the area. *Confirmed
-(code): T51, T52. That such a mesh is drawn and lit as authored has not
-been watched in game yet (unknown.md).*
+(code): T51, T52; in game: T60.*
+
+**SET-TILE-071** Past the drawn geometry, in an area with no skybox, the
+client shows the area's fog colour, and it fades geometry into that colour
+as the distance from the camera nears `FogClipDist`. A writer that fades
+geometry out (the far end of a mesh outside its cell, for example) SHOULD
+fade it towards the fog colour. *Confirmed (in game): T63, T64.*

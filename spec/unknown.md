@@ -151,8 +151,6 @@ unless marked.
   flag's source (read from the server's area message in
   `CNWCArea::LoadArea`, 0x710353-0x710358, from servers of 8193.36.5 on;
   T55) and from the server holding the field name `TileBrdrDisabled`.
-- **An empty model draws nothing** (T46): inferred. The miss still calls
-  `Scene::SpawnTile` with `""`.
 - **`ReloadBorder`** (0x711ff0) was read in the decompile only: it applies
   the same gate, deletes each cell's model with `Scene::DeleteTile`
   (0x4636a0) and spawns again, with rotation 0 on a miss.
@@ -170,15 +168,17 @@ unless marked.
 - **Stock edge models are symmetric** across their local y axis, as
   shared rows on opposite strips require (SET-EDGE-043): inferred, not
   surveyed.
-- **Tile meshes outside their cell, in game** (SET-TILE-070). The code
-  keeps them while their box meets the view (T52); that they are drawn,
-  lit like their tile and fogged like the rest has not been watched.
+- **Tile meshes outside their cell, turning** (SET-TILE-070). They are
+  drawn, lit and fogged in game (T60); that one stays while its tile's
+  own cell is off screen was not filmed (the code says so: T52).
 - **Meshes beyond the BSP's 5-cell ring.** A mesh whose box leaves the
   BSP root (T51) is filed in a border node whose region test is
   approximate; whether it is culled early is inferred, not shown.
-- **How far the client draws.** `CNWCArea::LoadArea` reads a float into
-  area +0x108 next to the per-area flags; that it is the area's
-  `FogClipDist` and sets the camera's far clip is inferred, not traced.
+- **How far the client draws.** It follows `FogClipDist` in game (T63).
+  That `CNWCArea::LoadArea` stores it at area +0x108, and how it becomes
+  the camera's far clip, is inferred, not traced.
+- **The background with a skybox.** Without one it is the fog colour
+  (T64); with one, not checked.
 - **An overhang's lights.** A mesh outside its cell belongs to its tile's
   `TileData`, so it is inferred to be lit by that tile's lights and the
   area's sun or moon; not traced through `LightNodeTile` (0x47c7b0).
