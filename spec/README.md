@@ -11,7 +11,7 @@ change behaviour; the changelog records what changed and when.
 | File | Rules | What |
 |---|---|---|
 | [set.md](set.md) | `SET-FILE-*` | The `.set` file: line ends, orientation, path-node letters, corner and edge keys |
-| [tile.md](tile.md) | `SET-TILE-*` | Tiles in an area: frames and rotation, how a walkmesh is loaded, adjacency, subdivision, point lookup, tile heights, shared edges |
+| [tile.md](tile.md) | `SET-TILE-*` | Tiles in an area: frames and rotation, how a walkmesh is loaded, adjacency, subdivision, point lookup, tile heights, shared edges, drawing |
 | [pathnode.md](pathnode.md) | `SET-NODE-*` | Path-node layouts, regions, exits, how tiles connect |
 | [route.md](route.md) | `SET-ROUTE-*` | A move request: the direct line, the tile route, denials and replanning, budgets, fallbacks, smoothing, where a created creature stands |
 | [intra.md](intra.md) | `SET-INTRA-*` | The search inside one tile, the choice of a crossing, line tests, region shapes |
