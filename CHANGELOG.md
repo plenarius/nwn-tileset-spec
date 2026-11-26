@@ -12,6 +12,8 @@ was read on and what changed in the engine's behaviour since the last one.
   `GetSurfaceMaterial`, door action points and line-of-sight tests, never
   by movement or routing. T67 (`nwmain-linux`): the client uses a face's
   material for footsteps only.
+- Engine finding T68 (`nwmain-linux`, in game): tile meshes outside their
+  cell stay drawn while the camera turns their tile's cell off screen.
 - Rules SET-TILE-017 (write the `position` line; never drop a zero one)
   and SET-TILE-022 (walkable materials don't change movement).
 - unknown.md: the height rule in `WalkUpdateLocation`, and footstep

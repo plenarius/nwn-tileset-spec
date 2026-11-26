@@ -177,9 +177,6 @@ unless marked.
 - **Stock edge models are symmetric** across their local y axis, as
   shared rows on opposite strips require (SET-EDGE-043): inferred, not
   surveyed.
-- **Tile meshes outside their cell, turning** (SET-TILE-070). They are
-  drawn, lit and fogged in game (T60); that one stays while its tile's
-  own cell is off screen was not filmed (the code says so: T52).
 - **Meshes beyond the BSP's 5-cell ring.** A mesh whose box leaves the
   BSP root (T51) is filed in a border node whose region test is
   approximate; whether it is culled early is inferred, not shown.

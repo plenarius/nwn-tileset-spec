@@ -772,9 +772,8 @@ overhang area the extra meshes are drawn out to 50 m past the area's edge,
 from low and high cameras over three sides and a corner. Within that
 distance the pictures match the reference area's from the same spot: no
 step in brightness, paint or height at the area's edge, and they fade with
-distance like the area's own tiles. *Confirmed (in game).* Whether a mesh
-stays while its tile's own cell is off screen (a turning camera) was not
-filmed; the code says it does (T52).
+distance like the area's own tiles. *Confirmed (in game).* That a mesh
+stays while its tile's own cell is off screen is T68.
 
 **T61 An edge row whose model is `****` draws nothing.** In the overhang
 area nothing is drawn past the extra meshes: the background shows there,
@@ -866,3 +865,13 @@ so how this plays out is open (unknown.md).
 (`CExoSound::Play3DOneShotSound` at 0x730404); `Visual` and `IsWater` go to
 `CNWCCreature::DoFootstepVisual` (0x72f8d0), which loads a visual effect
 model for the step. Nothing there moves the creature. *Confirmed (code).*
+
+**T68 Tile meshes outside their cell stay drawn as the camera turns.**
+(`nwmain-linux`, in game.) A second trial module carried overhangs at full
+and at a quarter of the detail (a vertex every 2.5 m), with trees, past
+three sides and a corner of a 10 × 10 area, as in T60. Walked by hand in
+the client, swinging and zooming the camera at each viewpoint until the
+boundary tiles under the overhangs left the screen: nothing past the
+area's edge disappeared or popped back. The only change seen was the
+camera itself entering a hillside, with keyholing off. *Confirmed (in
+game),* as T52 says from the code.
